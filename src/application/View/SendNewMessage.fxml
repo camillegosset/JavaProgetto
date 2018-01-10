@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.View.SendNewMessageController">
+   <children>
+      <TextField fx:id="topic" layoutX="41.0" layoutY="59.0" prefHeight="25.0" prefWidth="335.0" promptText="Topic" />
+      <TextField fx:id="receivers" layoutX="41.0" layoutY="96.0" prefHeight="25.0" prefWidth="335.0" promptText="Receiver(s)" />
+      <TextArea fx:id="message" layoutX="38.0" layoutY="151.0" prefHeight="299.0" prefWidth="525.0" promptText="Write your message here..." />
+      <Button layoutX="209.0" layoutY="477.0" mnemonicParsing="false" onAction="#sendNewMessage" prefHeight="25.0" prefWidth="69.0" text="Send" />
+      <Button layoutX="291.0" layoutY="477.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Cancel" />
+   </children>
+</AnchorPane>
