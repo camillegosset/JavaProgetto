@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 
+import application.View.MainViewController;
+import application.View.SendNewMessageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private static Stage primaryStage;
 	private static BorderPane mainLayout;
+	private static MainViewController mainController; //da cambiare non dev'essere staatico!!
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
@@ -27,6 +30,7 @@ public class Main extends Application {
 	private void showMainView() throws IOException {
 	FXMLLoader loader = new FXMLLoader();
 	loader.setLocation(Main.class.getResource("View/MainView.fxml"));
+	mainController = loader.getController();
 	mainLayout = loader.load();
 	Scene scene = new Scene(mainLayout);
 	primaryStage.setScene(scene);
@@ -42,6 +46,11 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("View/SendNewMessage.fxml"));
 		AnchorPane sendNewMessage = loader.load();
 		
+		
+		SendNewMessageController newMessageController = loader.getController();
+		//Account account = mainController.getAccount();
+		//newMessageController.setAccount(account); 
+		
 		Stage addDialogStage = new Stage();
 		addDialogStage.setTitle("New Message");
 		addDialogStage.initModality(Modality.WINDOW_MODAL);
@@ -49,5 +58,7 @@ public class Main extends Application {
 		Scene scene = new Scene(sendNewMessage);
 		addDialogStage.setScene(scene);
 		addDialogStage.showAndWait();
+		
+		
 	}
 }

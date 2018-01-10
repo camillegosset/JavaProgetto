@@ -29,8 +29,11 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 	chatServer.registerClient(name, this);
 	clientList.put(name, this);
 	}
+	public void sendMessage(Email email, String message) throws RemoteException {
+		Server.sendMessage(email, message);
+	}
 	public void retrieveMessage() throws RemoteException {
-		account.newMessage();	
+		account.newMessageArrived();	
 	}
 	// to do
 	public String getMessage(Integer ID) throws RemoteException {

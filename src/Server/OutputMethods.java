@@ -227,6 +227,7 @@ methods to add:
 
 			for(String receiver: email.getReceivers()) {
 				addEmailClientFile(email, receiver, 1);
+				//notify
 			}
 
 

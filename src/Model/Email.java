@@ -16,13 +16,28 @@ public class Email implements Serializable, Comparable <Email> {
 	private Integer ID;
 	// Myenum status;
 
-	public Email(String topic, String sender, LocalDate created, Integer ID) {
+	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created) {
+		super();
+		this.topic = topic;
+		this.sender = sender;
+		this.receivers = receivers;
+		this.date = created;
+	}
+
+	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created, Integer ID) {
 		super();
 		this.topic = topic;
 		this.sender = sender;
 		this.receivers = new ArrayList<>();
 		this.date = created;
+		this.ID = ID;
+	}
 
+	public Email(String topic, String sender,LocalDate created, Integer ID) {
+		super();
+		this.topic = topic;
+		this.sender = sender;
+		this.date = created;
 		this.ID = ID;
 	}
 

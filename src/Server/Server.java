@@ -51,6 +51,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 	*/
 	
+	@SuppressWarnings("unlikely-arg-type")
 	//to be changed totally!!!
 	@Override
 	public synchronized void sendMessage(Email email, String message) throws RemoteException {
@@ -58,12 +59,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		email.setID(ID = getNewID());
 		OutputMethods.addEmail(email);
 		OutputMethods.writeMessage(message, ID);  // ID.txt
-		// TO DO:
-		//onlineClients.get(email.getReceivers().getIterator).retrieveMessage();
+		
+		
+		//onlineClients.get(email.getReceivers()).retrieveMessage();
 		
 	}
 	private Integer getNewID() {
 		InputMethods.getNewID();
+		OutputMethods.incrementID();
 		return null;
 	}
 
@@ -84,9 +87,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	public ArrayList<Email> getEmailList(ClientInterface Client) {
 		 
 		//------------temporary--------
-		final Email email1 = new Email("Meeting","john@mail.com",LocalDate.of(2014, Month.MAY, 21),1);
-		final Email email2 = new Email("Pieczenie pierników","piotr@mail.com",LocalDate.of(1952, Month.OCTOBER, 21),2);
-		final Email email3 = new Email("Zakupy","john@mail.com",LocalDate.of(2017, Month.JANUARY, 21),3);
+		final Email email1 = new Email("Meeting","john@mail.com",new ArrayList<String>(), LocalDate.of(2014, Month.MAY, 21),1);
+		final Email email2 = new Email("Pieczenie pierników","piotr@mail.com",new ArrayList<String>(), LocalDate.of(1952, Month.OCTOBER, 21),2);
+		final Email email3 = new Email("Zakupy","john@mail.com", new ArrayList<String>(), LocalDate.of(2017, Month.JANUARY, 21),3);
 		
 		ArrayList<Email> emailList = new ArrayList<Email>();
 		emailList.add(email1);

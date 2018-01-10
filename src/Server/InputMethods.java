@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
 public class InputMethods {
 
     
-    public static ArrayList<String> inputLogin() {
+    public static ArrayList<String> inputLogin() {  //reading logins all
 		Scanner scf= null;
 		Scanner s= null;
 		ArrayList<String> lista_login= new ArrayList<>();
@@ -59,8 +59,8 @@ public class InputMethods {
 		return esiste;
 	}
 
-	//not sure if we need a logs file for ecery client
-	public static void visualizzareLogs(String login) {
+	//not sure if we need a logs file for every client
+	public static void visualizzareLogs(String login) {  
 		Scanner scf = null;
 		try {
 			scf = new Scanner(new File(login+"/logs.txt"));
@@ -117,12 +117,12 @@ public class InputMethods {
 	}
 
 	
-	public static Email getEmail(Integer i) {
+	public static Email getEmail(Integer id) {
 		Scanner scf = null;
 		Scanner s=null;
 		Email email= null;
 		try {
-			scf = new Scanner(new File("Email"+i+".txt"));
+			scf = new Scanner(new File("Email"+id+".txt"));
 			String tmp = "";
 			while (scf.hasNext()) {
 				tmp= tmp+ scf.next();

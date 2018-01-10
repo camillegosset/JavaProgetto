@@ -2,15 +2,13 @@ package application.View;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.Collections;
 
-import Client.Client;
+import Model.Account;
 import Model.Email;
-import Server.ServerInterface;
 import application.Main;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class MainViewController {
 
 
-	Client client ;
+	Account account;
 	
 	@FXML
 	TextArea mailPreview;
@@ -31,7 +29,7 @@ public class MainViewController {
 	private void showSelectedMessage() throws RemoteException {
 		Email selectedEmail = tableView.getSelectionModel().getSelectedItem();
 		if (selectedEmail != null) {
-		mailPreview.setText(client.getMessage(selectedEmail.getID()));
+		mailPreview.setText(account.getMessage(selectedEmail.getID()));
 		}
 		// -------naive--version
 		//mailPreview.setText(selectedEmail.getContent());
@@ -55,9 +53,16 @@ public class MainViewController {
 		tableView.setItems(getMessages());
 	}
 
+	
+	public Account getAccount() {
+		return account;
+	}
+
+
+
 	@FXML
 	private ObservableList<Email> getMessages() throws RemoteException {
-		ObservableList<Email> messages = client.getEmailList();
+		ObservableList<Email> messages = account.getEmailList();
 		Collections.sort(messages);
 		return messages;
 	}
@@ -72,7 +77,7 @@ public class MainViewController {
 	private void onCloseAction() {
 		try {
 		{
-			client.unregister();
+			account.unregister();
 			System.exit(0);
 			
 		}
@@ -83,9 +88,7 @@ public class MainViewController {
 	}
 
 	public void initialize() throws MalformedURLException, RemoteException, NotBoundException {
-		String chatServerURL = "rmi://localhost:5099/RMIChatServer";
-		ServerInterface chatServer = (ServerInterface) Naming.lookup(chatServerURL);
-		this.client = new Client("John", chatServer);
+		this.account = new Account("John");
 		mailPreview.setText("New Message");
 		populateTableView();
 	}
