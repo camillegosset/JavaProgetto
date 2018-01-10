@@ -16,9 +16,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private static Stage primaryStage;
 	private static BorderPane mainLayout;
-	@SuppressWarnings("unused")
-	private static MainViewController mainController;// = new MainViewController(); //da cambiare non dev'essere staatico!!
-	
+	private static MainViewController mainController;
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
