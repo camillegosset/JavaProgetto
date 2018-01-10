@@ -31,9 +31,9 @@ public class SendNewMessageController {
 	}
 
 	public void sendNewMessage() throws RemoteException {
-		//verification
+		//verification();
 		ArrayList<String> receivers = new ArrayList<String>();
-		receivers.add(this.receivers.getText());
+		receivers.add(this.receivers.getText()); //public  ArrayList<String> parseReceivers(String string)
 		String topic = this.topic.getText();
 		String sendersName = account.getClientName();
 		LocalDate created = LocalDate.now();
@@ -42,5 +42,11 @@ public class SendNewMessageController {
 		account.sendMessage(newEmail, message);
 		//
 	}
+
 	
+	public  ArrayList<String> parseReceivers(String string){
+		//TO DO
+		return null;
+		
+	}
 }
