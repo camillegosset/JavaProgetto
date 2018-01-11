@@ -52,7 +52,7 @@ public class SendNewMessageController {
 	    // do what you have to do
 	    stage.close();
 		//
-	}
+	}//
 
 	
 	public  ArrayList<String> parseReceivers(String string){

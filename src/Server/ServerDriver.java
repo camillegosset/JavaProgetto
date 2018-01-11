@@ -8,5 +8,5 @@ public class ServerDriver {
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		Registry registry = LocateRegistry.createRegistry(5099);
 		registry.rebind("RMIChatServer",new Server()); 
-	}
+	}//
 }

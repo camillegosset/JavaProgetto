@@ -68,7 +68,7 @@
         <columns>
           <TableColumn fx:id="topicColumn" prefWidth="265.0" text="Topic" />
           <TableColumn fx:id="senderColumn" minWidth="0.0" prefWidth="187.0" text="Sender" />
-            <TableColumn fx:id="dateColumn" prefWidth="109.0" text="Date" />
+            <TableColumn fx:id="dateColumn" prefWidth="110.0" text="Date" />
             <TableColumn fx:id="timeColumn" prefWidth="102.0" text="Time" />
         </columns>
       </TableView>

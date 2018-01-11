@@ -200,7 +200,7 @@ public class OutputMethods {
 		} catch (Exception e) {
 			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
 			e.printStackTrace();
-		} finally {
+		} finally {//
 			if (scanner != null) {
 				scanner.close();
 			}

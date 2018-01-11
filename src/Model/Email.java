@@ -72,7 +72,7 @@ public class Email implements Serializable, Comparable <Email> {
 		this.date = date;
 	}
 
-	public LocalDate getDeleted() {
+	public LocalDate getDeleted() {//
 		return deleted;
 	}
 

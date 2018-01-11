@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
 public class Account extends Observable {
 	
 private Client client;
-private String clientName;
+private String clientName;//
 private MainViewController controller;
 ObservableList<Email> messages = FXCollections.observableArrayList();
 

@@ -36,7 +36,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 	public void retrieveMessage() throws RemoteException {
 		account.newMessageArrived();
 		//System.out.println(account.getClientName());
-	}
+	}//
 	// to do
 	public String getMessage(Integer ID) throws RemoteException {
 		String message = Server.getMessage(ID);

@@ -23,7 +23,7 @@ public class Main extends Application {
 		Main.primaryStage.setTitle("E-mail service");
 		primaryStage.setOnCloseRequest(e -> {
 			mainController.onCloseAction();
-			return;
+			return;//
 		});
 		showMainView();
 	}

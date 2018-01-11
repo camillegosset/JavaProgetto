@@ -20,7 +20,7 @@ public class InputMethods {
 		ArrayList<String> lista_login = new ArrayList<>();
 		try {
 			scf = new Scanner(new File("logins.txt"));
-			String l = "";
+			String l = "";//
 			while (scf.hasNext()) {
 				l = l + scf.nextLine();
 			}

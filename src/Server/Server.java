@@ -58,7 +58,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		OutputMethods.addEmail(email);
 		OutputMethods.writeMessage(message, ID);  // ID.txt
 		
-		//System.out.println(email.getReceivers().get(0));
+		////System.out.println(email.getReceivers().get(0));
 		if(onlineClients.containsKey(email.getReceivers().get(0))) {
 		onlineClients.get(email.getReceivers().get(0)).retrieveMessage();
 		}
