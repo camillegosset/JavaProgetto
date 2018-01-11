@@ -1,8 +1,6 @@
 package Server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,23 +49,24 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 	*/
 	
-	@SuppressWarnings("unlikely-arg-type")
-	//to be changed totally!!!
+	
 	@Override
 	public synchronized void sendMessage(Email email, String message) throws RemoteException {
 		Integer ID;
 		email.setID(ID = getNewID());
+		//System.out.println(email); null pointer
 		OutputMethods.addEmail(email);
 		OutputMethods.writeMessage(message, ID);  // ID.txt
 		
-		
-		//onlineClients.get(email.getReceivers()).retrieveMessage();
-		
+		//System.out.println(email.getReceivers().get(0));
+		if(onlineClients.containsKey(email.getReceivers().get(0))) {
+		onlineClients.get(email.getReceivers().get(0)).retrieveMessage();
+		}
 	}
 	private Integer getNewID() {
-		InputMethods.getNewID();
+		Integer id = InputMethods.getID();
 		OutputMethods.incrementID();
-		return null;
+		return id;
 	}
 
 	@Override
@@ -84,22 +83,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	@Override
-	public ArrayList<Email> getEmailList(ClientInterface Client) {
-		 
-		//------------temporary--------
-		final Email email1 = new Email("Meeting","john@mail.com",new ArrayList<String>(), LocalDate.of(2014, Month.MAY, 21),1);
-		final Email email2 = new Email("Pieczenie pierników","piotr@mail.com",new ArrayList<String>(), LocalDate.of(1952, Month.OCTOBER, 21),2);
-		final Email email3 = new Email("Zakupy","john@mail.com", new ArrayList<String>(), LocalDate.of(2017, Month.JANUARY, 21),3);
-		
-		ArrayList<Email> emailList = new ArrayList<Email>();
-		emailList.add(email1);
-		emailList.add(email2);
-		emailList.add(email3);
-
-		
-		
-		//---------non puo restituire Email perche email contiene SimpleStringProperty che non e serializzabile-----------
-		return emailList;
+	public ArrayList<Email> getEmailList(ClientInterface Client) throws RemoteException {
+		return InputMethods.getEmailList(Client.getName());
 	}
 
 	@Override

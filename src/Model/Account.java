@@ -8,6 +8,7 @@ import java.util.Observable;
 
 import Client.Client;
 import Server.ServerInterface;
+import application.View.MainViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,15 +16,16 @@ public class Account extends Observable {
 	
 private Client client;
 private String clientName;
-
+private MainViewController controller;
 ObservableList<Email> messages = FXCollections.observableArrayList();
 
-public Account(String clientName) throws MalformedURLException, RemoteException, NotBoundException {
+public Account(String clientName, MainViewController controller) throws MalformedURLException, RemoteException, NotBoundException {
 	String chatServerURL = "rmi://localhost:5099/RMIChatServer";
 	ServerInterface chatServer = (ServerInterface) Naming.lookup(chatServerURL);
-	this.client = new Client(clientName, chatServer);
+	this.client = new Client(clientName, chatServer, this);
 	this.clientName = clientName;
-	
+	this.controller = controller;
+	addObserver(controller);
 }
 
 public Client getClient() {
@@ -36,7 +38,7 @@ public String getClientName() {
 
 public void newMessageArrived() throws RemoteException {
 	messages = client.getEmailList();
-	setChanged();//
+	setChanged();
 	notifyObservers();
 }
 public String getMessage(Integer id) throws RemoteException {
@@ -48,6 +50,10 @@ public ObservableList<Email> getEmailList() throws RemoteException {
 public void unregister() throws RemoteException {
 	client.unregister();
 	
+}
+
+public ObservableList<Email> getMessages() {
+	return messages;
 }
 
 public void sendMessage(Email email, String message) throws RemoteException {

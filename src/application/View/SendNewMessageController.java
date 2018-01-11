@@ -2,13 +2,16 @@ package application.View;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Model.Account;
 import Model.Email;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SendNewMessageController {
 
@@ -20,7 +23,15 @@ public class SendNewMessageController {
 	@FXML
 	private TextArea message;
 	
-	
+	@FXML private Button closeButton;
+
+	@FXML
+	private void closeButtonAction(){
+	    // get a handle to the stage
+	    Stage stage = (Stage) closeButton.getScene().getWindow();
+	    // do what you have to do
+	    stage.close();
+	}
 	
 	
 
@@ -34,12 +45,12 @@ public class SendNewMessageController {
 		//verification();
 		ArrayList<String> receivers = new ArrayList<String>();
 		receivers.add(this.receivers.getText()); //public  ArrayList<String> parseReceivers(String string)
-		String topic = this.topic.getText();
-		String sendersName = account.getClientName();
-		LocalDate created = LocalDate.now();
-		Email newEmail = new Email(topic,sendersName, receivers , created);
+		Email newEmail = new Email(topic.getText(), account.getClientName(), receivers ,LocalDate.now(), LocalTime.now());
 		String message = this.message.getText();
 		account.sendMessage(newEmail, message);
+		Stage stage = (Stage) closeButton.getScene().getWindow();
+	    // do what you have to do
+	    stage.close();
 		//
 	}
 

@@ -3,42 +3,49 @@ package Model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Email implements Serializable, Comparable <Email> {
 
 	private static final long serialVersionUID = 1L;
 	private String topic, sender;
-	// deve diventare una Lista!!!!!
-	private ArrayList<String> receivers;// da cambiare!!!!!
+	private ArrayList<String> receivers;
 	private LocalDate date;
+	private LocalTime time;
 	private LocalDate deleted;
 	private Integer ID;
 	// Myenum status;
 
-	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created) {
+	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created, LocalTime time) {
 		super();
 		this.topic = topic;
 		this.sender = sender;
 		this.receivers = receivers;
 		this.date = created;
+		this.time = time;
+		this.receivers = receivers;
+		this.ID = 0;
 	}
 
-	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created, Integer ID) {
+	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created, LocalTime time, Integer ID) {
 		super();
 		this.topic = topic;
 		this.sender = sender;
+		this.receivers = receivers;
+		this.date = created;
+		this.time = time;
+		this.ID = ID;
+	}
+
+	public Email(String topic, String sender,LocalDate created, LocalTime time, Integer ID) {
+		super();
+		this.topic = topic;
+		this.sender = sender;
+		this.date = created;
+		this.time = time;
+		this.ID = ID;
 		this.receivers = new ArrayList<>();
-		this.date = created;
-		this.ID = ID;
-	}
-
-	public Email(String topic, String sender,LocalDate created, Integer ID) {
-		super();
-		this.topic = topic;
-		this.sender = sender;
-		this.date = created;
-		this.ID = ID;
 	}
 
 	public String getTopic() {
@@ -73,8 +80,22 @@ public class Email implements Serializable, Comparable <Email> {
 		this.deleted = deleted;
 	}
 
+	public LocalTime getTime() {
+		return  time.minusNanos(time.getNano());
+	}
+
+	
+	public void setTime(LocalTime time) {
+		this.time = time;
+	}
+
 	public int compareTo(Email e) {
-		return this.getDate().compareTo(e.getDate());
+		
+		if (getDate().compareTo(e.getDate())== 0) {
+			return -this.getTime().compareTo(e.getTime());
+		} else {
+		return -this.getDate().compareTo(e.getDate());
+		}
 	}
 
 	public Integer getID() {
@@ -99,26 +120,23 @@ public class Email implements Serializable, Comparable <Email> {
 	}
 
 	public String getStringReceivers() {
-		String res="";
-		int i=0;
+		StringBuffer res= new StringBuffer("");
+		int i;
 		for( i=0; i< this.receivers.size() - 1; i++) {
-			res= res+ this.receivers.get(i)+ " , ";
+			res.append(this.receivers.get(i)+ " , ");
 		}
-		if(i>0) {
-			res= res+ this.receivers.get(i);
-		}
-		return res;
+		
+			if(this.receivers.size() > 0) {
+				res.append(this.receivers.get(i));
+			}
+		return res.toString();
 	}
 
 	public String toString() {
-		return this.ID+"#"+this.topic+"#"+this.date+"#"+this.getStringReceivers()+"#";
+		return this.ID+"#"+this.topic+"#"+this.date+"#"+this.time+"#"+this.sender+"#"+this.getStringReceivers()+"#";
 	}
 
-	/*public Object getReceivers() {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
+	
 
 
 

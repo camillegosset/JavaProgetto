@@ -1,8 +1,12 @@
 
-null#dfh#2018-01-10##
+1#Firt Message#2018-01-11#11:54:18.703#John#John#
 
-null#rgrd#2018-01-10##
+2#Ciao#2018-01-11#12:26:51.920#John#Jane#
 
-null#hello#2018-01-10##
+3#Re: Ciao#2018-01-11#12:27:47.670#Jane#John#
 
-null#hello#2018-01-10##
+4#Re: re: Ciao#2018-01-11#12:28:13.177#John#Jane#
+
+5#Incontro#2018-01-11#12:31:14.533#John#Jane#
+
+6#re: Incontro#2018-01-11#12:31:47.904#Jane#John#

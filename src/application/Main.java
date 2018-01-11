@@ -16,13 +16,13 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private static Stage primaryStage;
 	private static BorderPane mainLayout;
-	private static MainViewController mainController;
+	private static MainViewController mainController;//
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
 		Main.primaryStage.setTitle("E-mail service");
 		primaryStage.setOnCloseRequest(e -> {
-			System.out.println("Exit handler");
+			mainController.onCloseAction();
 			return;
 		});
 		showMainView();

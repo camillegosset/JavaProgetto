@@ -23,17 +23,19 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 	private static ServerInterface Server;
 	
 
-	public Client(String name, ServerInterface chatServer) throws RemoteException {
+	public Client(String name, ServerInterface chatServer, Account account) throws RemoteException {
 	this.setName(name);
 	this.setServer(chatServer);
 	chatServer.registerClient(name, this);
 	clientList.put(name, this);
+	this.account = account;
 	}
 	public void sendMessage(Email email, String message) throws RemoteException {
 		Server.sendMessage(email, message);
 	}
 	public void retrieveMessage() throws RemoteException {
-		account.newMessageArrived();	
+		account.newMessageArrived();
+		//System.out.println(account.getClientName());
 	}
 	// to do
 	public String getMessage(Integer ID) throws RemoteException {
