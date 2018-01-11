@@ -43,7 +43,7 @@ public class InputMethods {
 		Scanner scf = null;
 		boolean esiste = false;
 		try {
-			scf = new Scanner(new File("logins.txt"));
+			scf = new Scanner(new File("logins.txt")).useDelimiter("\\s*,\\s*");
 			String l = "";
 			while (scf.hasNext()) {
 				clientList.add(l = scf.next());

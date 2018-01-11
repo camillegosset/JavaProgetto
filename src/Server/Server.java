@@ -35,8 +35,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		if(egsistsLogin(clientname)) {
 			synchronized (onlineClients){
 		this.onlineClients.put(clientname , client);
+		System.out.println(clientname + " is logged in succesfully!");
 		}
 		} else {
+			System.out.println("Non esisti!!!!");
 			//raiseError!!!
 		}
 		

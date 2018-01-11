@@ -22,42 +22,41 @@ public class SendNewMessageController {
 	private TextField receivers;
 	@FXML
 	private TextArea message;
-	
-	@FXML private Button closeButton;
 
 	@FXML
-	private void closeButtonAction(){
-	    // get a handle to the stage
-	    Stage stage = (Stage) closeButton.getScene().getWindow();
-	    // do what you have to do
-	    stage.close();
+	private Button closeButton;
+
+	@FXML
+	private void closeButtonAction() {
+		// get a handle to the stage
+		Stage stage = (Stage) closeButton.getScene().getWindow();
+		// do what you have to do
+		stage.close();
 	}
-	
-	
-
-
 
 	public void setAccount(Account account) {
 		this.account = account;
 	}
 
 	public void sendNewMessage() throws RemoteException {
-		//verification();
+		// verification();
 		ArrayList<String> receivers = new ArrayList<String>();
-		receivers.add(this.receivers.getText()); //public  ArrayList<String> parseReceivers(String string)
-		Email newEmail = new Email(topic.getText(), account.getClientName(), receivers ,LocalDate.now(), LocalTime.now());
+		receivers.add(this.receivers.getText()); // public ArrayList<String> parseReceivers(String string)
+		Email newEmail = new Email(topic.getText(), account.getClientName(), receivers, LocalDate.now(),
+				LocalTime.now());
+		newEmail.setStatus(0);
 		String message = this.message.getText();
-		account.sendMessage(newEmail, message);
-		Stage stage = (Stage) closeButton.getScene().getWindow();
-	    // do what you have to do
-	    stage.close();
-		//
-	}//
 
-	
-	public  ArrayList<String> parseReceivers(String string){
-		//TO DO
+		account.sendMessage(newEmail, message);
+
+		// closing the window
+		Stage stage = (Stage) closeButton.getScene().getWindow();
+		stage.close();
+	}
+
+	public ArrayList<String> parseReceivers(String string) {
+		// TO DO
 		return null;
-		
+
 	}
 }

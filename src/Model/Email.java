@@ -15,7 +15,7 @@ public class Email implements Serializable, Comparable <Email> {
 	private LocalTime time;
 	private LocalDate deleted;
 	private Integer ID;
-	// Myenum status;
+	private int status; //0- new 1- read 2- deleted
 
 	public Email(String topic, String sender, ArrayList<String> receivers, LocalDate created, LocalTime time) {
 		super();
@@ -58,6 +58,14 @@ public class Email implements Serializable, Comparable <Email> {
 
 	public String getSender() {
 		return sender;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public void setSender(String sender) {

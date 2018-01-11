@@ -10,3 +10,15 @@
 5#Incontro1#2018-01-11#12:31:14.533#John#Jane#
 
 6#re: Incontro#2018-01-11#12:31:47.904#Jane#John#
+
+6#Siemka#2018-01-11#14:23:32.670#Jane#John#
+
+7#Bella, ciao#2018-01-11#14:24:27.873#John#Jane#
+
+8#Bolla, addio#2018-01-11#14:24:41.050#Jane#John#
+
+9#Love me#2018-01-11#14:35:06.508#John#Jane#
+
+10#Re: Love me#2018-01-11#14:35:22.898#Jane#John#
+
+11#ciao4#2018-01-11#15:11:08.818#John#Jane#
