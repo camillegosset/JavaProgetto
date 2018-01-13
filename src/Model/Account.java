@@ -17,6 +17,7 @@ public class Account extends Observable {
 private Client client;
 private String clientName;//
 private MainViewController controller;
+private int type; //reply =1; reply all =2 forward =3
 ObservableList<Email> messages = FXCollections.observableArrayList();
 
 public Account(String clientName, MainViewController controller) throws MalformedURLException, RemoteException, NotBoundException {
@@ -27,6 +28,17 @@ public Account(String clientName, MainViewController controller) throws Malforme
 	this.controller = controller;
 	addObserver(controller);
 }
+
+
+public int getType() {
+	return type;
+}
+
+
+public void setType(int type) {
+	this.type = type;
+}
+
 
 public Client getClient() {
 	return client;
@@ -57,8 +69,26 @@ public ObservableList<Email> getMessages() {
 }
 
 public void sendMessage(Email email, String message) throws RemoteException {
-	email.setSender(clientName);
+	//email.setSender(clientName); DJ fe'
 	client.sendMessage(email, message);
+}
+
+public void changeOpenedStatus(Integer id) throws RemoteException {
+	// TODO Auto-generated method stub
+	client.changeOpenedStatus(id);
+}
+
+public ObservableList<Email> getSentEmailList() throws RemoteException {
+	return client.getSentEmailList();
+	
+}
+
+public ObservableList<Email> getDeletedEmailList() throws RemoteException {
+	return client.getDeletedEmailList();
+}
+
+public void deleteMessage(Integer id) throws RemoteException{
+	client.deleteMessage(id);	
 }
 
 	

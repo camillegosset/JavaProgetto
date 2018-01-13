@@ -14,5 +14,9 @@ public interface ServerInterface extends Remote {
 	//void broadcastMessage(String message) throws RemoteException; //
 	String getMessage(Integer ID) throws RemoteException;
 	ArrayList<Email> getEmailList(ClientInterface Client) throws RemoteException;
-	}//
+	void changeOpenedStatus(Integer id) throws RemoteException;
+	ArrayList<Email> getSentEmailList(ClientInterface client) throws RemoteException;
+	ArrayList<Email> getDeletedEmailList(ClientInterface client) throws RemoteException;
+	void deleteMessage(Integer id, String clientName) throws RemoteException;
+	}
 

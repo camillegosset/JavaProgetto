@@ -12,6 +12,9 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -29,9 +32,9 @@
          <children>
             <Label fx:id="nameLabel" text="Label" />
             <Separator prefWidth="200.0" />
-            <Button lineSpacing="10.0" mnemonicParsing="false" onAction="#populateTableView" prefHeight="25.0" prefWidth="100.0" text="Received" />
-            <Button lineSpacing="10.0" mnemonicParsing="false" prefWidth="100.0" text="Sent" />
-            <Button lineSpacing="10.0" mnemonicParsing="false" prefWidth="100.0" text="Deleted" />
+            <Button fx:id="received" lineSpacing="10.0" mnemonicParsing="false" onAction="#populateTableView" prefHeight="25.0" prefWidth="100.0" text="Received" />
+            <Button fx:id="sent" lineSpacing="10.0" mnemonicParsing="false" onAction="#populateTableView" prefWidth="100.0" text="Sent" />
+            <Button fx:id="deleted" lineSpacing="10.0" mnemonicParsing="false" onAction="#populateTableView" prefWidth="100.0" text="Deleted" />
          </children>
          <opaqueInsets>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -46,12 +49,47 @@
          <children>
             <SplitPane dividerPositions="0.25069637883008355" layoutY="3.0" orientation="VERTICAL" prefHeight="361.0" prefWidth="800.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" opacity="0.17" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: grey;" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: GhostWhite;">
+                     <children>
+                        <GridPane layoutX="79.0" layoutY="-1.0" prefHeight="87.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="From:" />
+                              <Label text="To:" GridPane.rowIndex="1" />
+                              <Label text="Topic:" GridPane.rowIndex="2" />
+                              <Label text="Day:" GridPane.columnIndex="2" />
+                              <Label text="Hour:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label fx:id="from" GridPane.columnIndex="1" />
+                              <Label fx:id="to" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="topic" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label fx:id="date" GridPane.columnIndex="3" />
+                              <Label fx:id="hour" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onAction="#deleteMessage" text="Delete" GridPane.columnIndex="4" />
+                              <Button fx:id="reply" mnemonicParsing="false" onAction="#replyWindow" text="Answer" GridPane.columnIndex="5" />
+                              <Button fx:id="replyToAll" mnemonicParsing="false" onAction="#replyWindow" text="Answer to All" GridPane.columnIndex="6" />
+                              <Button fx:id="forward" mnemonicParsing="false" onAction="#replyWindow" text="Forward" GridPane.columnIndex="7" />
+                           </children>
+                        </GridPane>
+                     </children></AnchorPane>
                 <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="217.0" prefWidth="798.0">
                      <children>
                         <ScrollPane style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <content>
-                              <TextArea fx:id="mailPreview" prefHeight="256.0" prefWidth="790.0" promptText="Content" style="-fx-background-color: white;">
+                              <TextArea fx:id="mailPreview" editable="false" prefHeight="256.0" prefWidth="790.0" style="-fx-background-color: white;">
                                  <font>
                                     <Font size="14.0" />
                                  </font></TextArea>

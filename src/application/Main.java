@@ -1,9 +1,11 @@
 package application;
-
+ 
 import java.io.IOException;
 
 import Model.Account;
+import Model.Email;
 import application.View.MainViewController;
+import application.View.ReplyController;
 import application.View.SendNewMessageController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -48,9 +50,7 @@ public class Main extends Application {
 		
 		
 		SendNewMessageController newMessageController = loader.getController();
-		if(mainController == null) {
-			System.out.println("Boo");
-		}
+		
 		Account account = mainController.getAccount();
 		newMessageController.setAccount(account); 
 		
@@ -61,6 +61,30 @@ public class Main extends Application {
 		addDialogStage.initOwner(primaryStage);
 		Scene scene = new Scene(sendNewMessage);
 		addDialogStage.setScene(scene);
+		addDialogStage.showAndWait();
+		
+		
+	}
+	public static void showReplyWindow(int i, Email email) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("View/Reply.fxml"));
+		AnchorPane sendNewMessage = loader.load();
+		
+		
+		ReplyController newMessageController = loader.getController();
+		
+		Account account = mainController.getAccount();
+		newMessageController.setAccount(account); 
+		account.setType(i);
+		newMessageController.setEmail(email);
+		Stage addDialogStage = new Stage();
+		addDialogStage.setTitle("New Message");
+		addDialogStage.initModality(Modality.WINDOW_MODAL);
+		addDialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(sendNewMessage);
+		addDialogStage.setScene(scene);
+		
+		newMessageController.initializeR();
 		addDialogStage.showAndWait();
 		
 		

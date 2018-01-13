@@ -63,21 +63,16 @@ public class OutputMethods {
 	 * }
 	 */
 
-	public static void removeEmail(Email email, String client) {
-		email.setDeleted(LocalDate.now());
-		removeEmail(email.getID(), client);
-		// Dobbiamo magari fare il metodo nella classe cliente
-	}
 
 	@SuppressWarnings("resource")
-	public static boolean removeEmail(int index, String client) {
+	public static boolean removeEmail(Integer id, String clientName) {
 		ArrayList<Integer> emails_received = new ArrayList<Integer>();
 		ArrayList<Integer> emails_sent = new ArrayList<Integer>();
 		ArrayList<Integer> emails_deleted = new ArrayList<Integer>();
 		Scanner scf = null;
 		Scanner s = null;
 		try {
-			scf = new Scanner(new File(client + ".txt"));
+			scf = new Scanner(new File(clientName + ".txt"));
 			String l = "";
 			while (scf.hasNext()) {
 				l = l + scf.nextLine();
@@ -96,7 +91,7 @@ public class OutputMethods {
 			line = new Scanner(sent).useDelimiter("\\s*,\\s*");
 			while (line.hasNext()) {
 				int i = line.nextInt();
-				System.out.println(i);
+				//System.out.println(i);
 				emails_sent.add(i);
 			}
 
@@ -106,12 +101,11 @@ public class OutputMethods {
 				emails_deleted.add(line.nextInt());
 			}
 
-			Integer i = (Integer) index;
-			boolean b1 = emails_received.remove(i);
-			boolean b2 = emails_received.remove(i);
+			boolean b1 = emails_received.remove(id);
+			boolean b2 = emails_sent.remove(id);
 
 			if (b1 || b2) {
-				emails_deleted.add(i);
+				emails_deleted.add(id);
 			}
 		} catch (IOException e) {
 			System.out.println("PROBLEMA: " + e.getMessage());
@@ -123,23 +117,23 @@ public class OutputMethods {
 			if (s != null)
 				s.close();
 		}
-		PrintWriter p = null;
+		PrintWriter p = null;// Penso di aver trovato l'errore.
 		try {
-			FileWriter f = new FileWriter(client + ".txt");
+			FileWriter f = new FileWriter(clientName + ".txt");
 			p = new PrintWriter(f);
-			String l = "";
+			String l = ",";
 			for (int i : emails_received) {
 				l = l + i + ", ";
 			}
 			l = l + "#";
 			p.println(l);
-			l = "";
+			l = ",";
 			for (int i : emails_sent) {
 				l = l + i + ", ";
 			}
 			l = l + "#";
 			p.println(l);
-			l = "";
+			l = ",";
 			for (int i : emails_deleted) {
 				l = l + i + ", ";
 			}
@@ -182,7 +176,7 @@ public class OutputMethods {
 		// PrintWriter p= null;
 		Scanner scanner = null;
 		FileWriter writer = null;
-		String out = "," + email.getID();
+		String out =  email.getID() + ",";
 		try {
 
 			File file = new File(client + ".txt");
@@ -237,5 +231,11 @@ public class OutputMethods {
 			
 		}
 	
+	}
+
+	public static void changeOpenedStatus(Integer id) {
+		// TODO Auto-generated method stub
+		// 1 trovare la riga che commincia con il id del mail
+		// 
 	}
 }

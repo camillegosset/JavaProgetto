@@ -41,10 +41,11 @@ public class SendNewMessageController {
 	public void sendNewMessage() throws RemoteException {
 		// verification();
 		ArrayList<String> receivers = new ArrayList<String>();
-		receivers.add(this.receivers.getText()); // public ArrayList<String> parseReceivers(String string)
+		receivers.addAll(Email.parseReceivers(this.receivers.getText())); // Spero che funzioni
 		Email newEmail = new Email(topic.getText(), account.getClientName(), receivers, LocalDate.now(),
 				LocalTime.now());
-		newEmail.setStatus(0);
+		newEmail.setExisting(true);
+		newEmail.setOpened(false);
 		String message = this.message.getText();
 
 		account.sendMessage(newEmail, message);

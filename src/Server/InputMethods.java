@@ -129,31 +129,36 @@ public class InputMethods {
 			scf = new Scanner(new File("emails.txt"));
 			while (scf.hasNextLine()) {
 				String tmp = "" + scf.nextLine();
-				//System.out.println(tmp);
+				// System.out.println(tmp);
 				s = new Scanner(tmp).useDelimiter("\\s*#\\s*");
-				Integer ID ;
-				if(s.hasNext()) {
+				Integer ID;
+				if (s.hasNext()) {
 					ID = s.nextInt();
 				} else {
 					ID = 0;
 				}
-				
-				if(ID.equals(id)==false) {
+
+				if (ID.equals(id) == false) {
 					continue;
 				}
 				String topic = s.next();
 				LocalDate date = LocalDate.parse(s.next());
 				LocalTime hour = LocalTime.parse(s.next());
 				String sender = s.next();
-				email = new Email(topic, sender, date,hour, ID);
-				while (s.hasNext()) {
-					email.aggiungereReceiver(s.next());
+				boolean existing = s.nextBoolean();
+				boolean opened = s.nextBoolean();
+				email = new Email(topic, sender, date, hour, ID);
+				email.setExisting(existing);
+				email.setOpened(opened);
+				Scanner last = new Scanner(s.next()).useDelimiter("\\s*,\\s*");
+				while (last.hasNext()) {
+					email.aggiungereReceiver(last.next());
 				}
 				break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			//System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
+			// System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
 			// return email;
 		} finally {
 			if (scf != null)
@@ -172,8 +177,7 @@ public class InputMethods {
 	}
 
 	public static int counter(int line, String file, char separatore) {
-
-		int count = Integer.MIN_VALUE;
+		int count = Integer.MIN_VALUE; // diese, croisillon
 		// 1 Open file
 		Scanner scf = null;
 		try {
@@ -198,7 +202,7 @@ public class InputMethods {
 
 		{
 			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			if (scf != null)
 				scf.close();
@@ -209,39 +213,31 @@ public class InputMethods {
 
 	}
 
-	public static ArrayList<Email> getEmailList(String name) {
-		// ------------temporary--------
-
-		//final Email email1 = new Email("Meeting", "john@mail.com", new ArrayList<String>(),LocalDate.of(2014, Month.MAY, 21), 2);
-		
-
+	public static ArrayList<Email> getEmailList(String name, int line) {
 		ArrayList<Email> emailList = new ArrayList<Email>();
 
-		//emailList.add(email1);
-
-		
 		Scanner scf = null;
 		Scanner s = null;
 		try {
 			scf = new Scanner(new File(name + ".txt")).useDelimiter("\\s*#\\s*");
 			ArrayList<String> tmp = new ArrayList<String>();
-			int j=0;
+			int j = 0;
 			while (scf.hasNext()) {
 				tmp.add(scf.next());
 			}
-			//System.out.println(tmp.get(0));
-			s = new Scanner(tmp.get(0)).useDelimiter("\\s*,\\s*");
+			// System.out.println(tmp.get(0));
+			s = new Scanner(tmp.get(line)).useDelimiter("\\s*,\\s*");
 			ArrayList<Integer> list = new ArrayList<Integer>();
 			while (s.hasNext()) {
-				
+
 				list.add(s.nextInt());
-				
+
 			}
-			
+
 			for (Integer i : list) {
-				//System.out.println(i);
+				// System.out.println(i);
 				emailList.add(getEmail(i));
-				//System.out.println(getEmail(i)); nullPointerException
+				// System.out.println(getEmail(i)); nullPointerException
 			}
 		} catch (Exception e) {
 			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
@@ -250,10 +246,10 @@ public class InputMethods {
 			if (scf != null)
 				scf.close();
 		}
-		if(emailList.isEmpty()) {
+		if (emailList.isEmpty()) {
 			System.out.println("La lista e' vuota");
 		}
-		
+
 		return emailList;
 	}
 

@@ -1,24 +1,60 @@
 
-1#Firt Message#2018-01-11#11:54:18.703#John#John#
+1#gooogle#2018-01-13#11:52:08.008#Jane#true#false#John , Matteo#
 
-2#Ciao#2018-01-11#12:26:51.920#John#Jane#
+2#Cucu#2018-01-13#12:14:30.951#Jane#true#false#Matteo#
 
-3#Re: Ciao#2018-01-11#12:27:47.670#Jane#John#
+3#rosf#2018-01-13#12:14:55.393#Jane#true#false#Jane#
 
-4#Re: re: Ciao#2018-01-11#12:28:13.177#John#Jane#
+4#fgh#2018-01-13#13:27:20.399#Jane#true#false#John#
 
-5#Incontro1#2018-01-11#12:31:14.533#John#Jane#
+5#fdhdfhd#2018-01-13#13:27:33.081#Jane#true#false#Jane#
 
-6#re: Incontro#2018-01-11#12:31:47.904#Jane#John#
+6#ffhsrjsjjf#2018-01-13#13:27:40.969#Jane#true#false#Jane#
 
-6#Siemka#2018-01-11#14:23:32.670#Jane#John#
+7#warning#2018-01-13#15:24:21.045#Jane#true#false#Jane#
 
-7#Bella, ciao#2018-01-11#14:24:27.873#John#Jane#
+8#ciao#2018-01-13#15:26:07.298#Jane#true#false#Jane#
 
-8#Bolla, addio#2018-01-11#14:24:41.050#Jane#John#
+9#ciao#2018-01-13#15:26:26.364#Jane#true#false#Jane#
 
-9#Love me#2018-01-11#14:35:06.508#John#Jane#
+10#ciao#2018-01-13#15:26:27.494#Jane#true#false#Jane#
 
-10#Re: Love me#2018-01-11#14:35:22.898#Jane#John#
+11#ciao#2018-01-13#15:26:28.547#Jane#true#false#Jane#
 
-11#ciao4#2018-01-11#15:11:08.818#John#Jane#
+12#dferrf#2018-01-13#15:27:56.060#Jane#true#false#Jane#
+
+13#dhdhf#2018-01-13#15:28:28.401#Jane#true#false#John#
+
+14#dgdhd#2018-01-13#15:28:36.712#Jane#true#false#Jane#
+
+15#ss#2018-01-13#15:29:31.321#Jane#true#false#Jane#
+
+16#fr#2018-01-13#15:32:21.341#Jane#true#false#Jane#
+
+17#rrf#2018-01-13#15:39:22.055#Jane#true#false#Jane#
+
+18#rrf#2018-01-13#15:39:26.104#Jane#true#false#Jane#
+
+19#rrf#2018-01-13#15:39:27.322#Jane#true#false#Jane#
+
+20#de#2018-01-13#15:41:46.913#Jane#true#false#John#
+
+21#Ciao#2018-01-13#15:46:20.313#John#true#false#John#
+
+22#Coucou#2018-01-13#15:56:04.167#John#true#false#John#
+
+23#Coucou#2018-01-13#15:59:17.715#John#true#false#John#
+
+24#Join#2018-01-13#16:00:37.647#John#true#false#John#
+
+25#newMsg#2018-01-13#17:29:34.718#John#true#false#John , Jane , Matteo#
+
+26#newMsg#2018-01-13#17:29:41.798#John#true#false#John , Jane , Matteo#
+
+27#newMsg#2018-01-13#17:29:49.465#John#true#false#John , Jane , Matteo#
+
+28#ToAll#2018-01-13#17:36:24.819#Jane#true#false#Jane , John , Matteo#
+
+29#Re: ToAll#2018-01-13#17:39:50.862#Jane#true#false#Jane , John , Matteo#
+
+30#Re: Re: ToAll#2018-01-13#18:14:30.978#Jane#true#false#Jane , John , Matteo#

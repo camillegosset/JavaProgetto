@@ -69,5 +69,22 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 		Server.unregisterClient(name);
 		
 	}
+	public void changeOpenedStatus(Integer id) throws RemoteException {
+		// TODO Auto-generated method stub
+		Server.changeOpenedStatus(id);
+	}
+	public ObservableList<Email> getSentEmailList() throws RemoteException {
+		ObservableList<Email> sentEmailList = FXCollections.observableArrayList();
+		sentEmailList.addAll(Server.getSentEmailList(this));
+		return sentEmailList;
+	}
+	public ObservableList<Email> getDeletedEmailList() throws RemoteException {
+		ObservableList<Email> sentEmailList = FXCollections.observableArrayList();
+		sentEmailList.addAll(Server.getDeletedEmailList(this));
+		return sentEmailList;
+	}
+	public void deleteMessage(Integer id) throws RemoteException{
+		Server.deleteMessage(id, name);
+	}
 
 }
