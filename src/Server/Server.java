@@ -29,10 +29,13 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		messageList.put(ID, message);
 	}
 	
-	public void informAboutMistakenName(Email email, ArrayList<String> mistakenReceiversList)throws RemoteException {
+	public void informAboutMistakenName(Email email, ArrayList<String> mistakenReceiversList) {
 		
 		if (onlineClients.containsKey(email.getSender())) { //se  stiamo ancora on-line
-			onlineClients.get(email.getSender()).informAboutMistakenName(email.getTopic(), mistakenReceiversList);
+			try {
+				onlineClients.get(email.getSender()).informAboutMistakenName(email.getTopic(), mistakenReceiversList);
+			} catch (RemoteException e) {
+			}
 			}
 		viewController.write(email.getSender() + " attempting to write a message to a non-existent client(s): " + mistakenReceiversList);
 		
@@ -52,7 +55,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		}
 	}
 
-	public void registerClient(String clientname, ClientInterface client) throws RemoteException {
+	public void registerClient(String clientname, ClientInterface client) {
 		if (egsistsLogin(clientname)) {
 			synchronized (onlineClients) {
 				this.onlineClients.put(clientname, client);
@@ -65,7 +68,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 	
 	@Override
-	public void sendMessage(Email email, String message) throws RemoteException {
+	public void sendMessage(Email email, String message)  {
 		
 		viewController.write(email.getSender() + " tries to send n e-mail to:" +  Email.getStringReceivers(email.getReceivers()));
 		
@@ -75,11 +78,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 		
 		
 		Thread addingEmail = new Thread(() -> {
-			try {
-				OutputMethods.addEmail(email, this);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			OutputMethods.addEmail(email, this);
 		});
 		addingEmail.start();
 		
@@ -121,8 +120,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	@Override
-	public String getMessage(Integer ID, ClientInterface client) throws RemoteException {
-		viewController.write(client.getName() + " retrieves content of a message nr: " + ID);
+	public String getMessage(Integer ID, ClientInterface client) {
+		try {
+			viewController.write(client.getName() + " retrieves content of a message nr: " + ID);
+		} catch (RemoteException e) {
+		}
 		if (messageList.containsKey(ID)) {
 			return messageList.get(ID);
 		} else {
@@ -135,38 +137,57 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 	}
 
 	@Override
-	public ArrayList<Email> getEmailList(ClientInterface client) throws RemoteException {
-		viewController.write(client.getName() + " retrieves received messages list.");
-		return InputMethods.getEmailList(client.getName(),0);
+	public ArrayList<Email> getEmailList(ClientInterface client)  {
+		try {
+			viewController.write(client.getName() + " retrieves received messages list.");
+			return InputMethods.getEmailList(client.getName(),0);
+		} catch (RemoteException e) {
+			return null;
+		}
+	
 	}
 	
 	@Override
-	public ArrayList<Email> getSentEmailList(ClientInterface client) throws RemoteException {
+	public ArrayList<Email> getSentEmailList(ClientInterface client) {
+		try {
 		viewController.write(client.getName() + " retrieves sent messages list.");
 		return InputMethods.getEmailList(client.getName(),1);
+		} catch (RemoteException e) {
+			return null;
+		}
 	}
 	@Override
-	public ArrayList<Email> getDeletedEmailList(ClientInterface client) throws RemoteException {
+	public ArrayList<Email> getDeletedEmailList(ClientInterface client) {
+		try {
 		viewController.write(client.getName() + " retrieves deleted messages list.");
 		return InputMethods.getEmailList(client.getName(),2);
+		} catch (RemoteException e) {
+			return null;
+		}
 		
 	}
 	@Override
-	public void unregisterClient(String clientName) throws RemoteException {
+	public void unregisterClient(String clientName) {
 		this.onlineClients.remove(clientName);
 		viewController.write(clientName + " unregistered.");
 
 	}
 
 	@Override
-	public void changeOpenedStatus(Integer id) throws RemoteException {
+	public void changeOpenedStatus(Integer id)  {
 		OutputMethods.changeOpenedStatus(id);
 	}
 
 	@Override
-	public void deleteMessage(Integer id, String clientName) throws RemoteException {
+	public void deleteMessage(Integer id, String clientName)  {
 		OutputMethods.removeEmail(id, clientName);
 		viewController.write(clientName + " deletes a message nr:" + id);
+		
+	}
+
+	@Override
+	public void isServerOn() throws RemoteException {
+		// TODO Auto-generated method stub
 		
 	}
 

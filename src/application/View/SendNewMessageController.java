@@ -1,6 +1,5 @@
 package application.View;
 
-import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class SendNewMessageController {
          return !m.matches();
   }
 	
-	public void sendNewMessage() throws RemoteException {
+	public void sendNewMessage()  {
 		if(this.receivers.getText().isEmpty()) {
 			Platform.runLater(new Runnable() {
 				@Override
@@ -101,7 +100,9 @@ public class SendNewMessageController {
 		 if(topic.getText().isEmpty()) topic.setText("(no topic)");
 		 
 
-		 
+		 if(account == null) {
+			 return ;
+		 }
 		Email newEmail = new Email(topic.getText(), account.getClientName(), receivers, LocalDate.now(),
 				LocalTime.now());
 		newEmail.setExisting(true);

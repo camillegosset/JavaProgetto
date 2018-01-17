@@ -23,8 +23,11 @@
       <ToolBar prefHeight="52.0" prefWidth="800.0" BorderPane.alignment="CENTER">
         <items>
           <Button mnemonicParsing="false" onAction="#newMessageWindow" text="Write a new message" />
-            <Button alignment="CENTER_RIGHT" contentDisplay="TOP" lineSpacing="60.0" mnemonicParsing="false" onAction="#onCloseAction" text="Logout and close" />
+            <Button alignment="CENTER_RIGHT" contentDisplay="TOP" lineSpacing="60.0" mnemonicParsing="false" onAction="#onCloseAction" prefHeight="25.0" prefWidth="111.0" text="Logout and close" />
         </items>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </ToolBar>
    </top>
    <left>

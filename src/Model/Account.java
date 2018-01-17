@@ -1,14 +1,12 @@
 package Model;
 
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import Client.Client;
-import Server.ServerInterface;
 import application.View.MainViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +19,9 @@ private String clientName;//
 private int type; //reply =1; reply all =2 forward =3
 ObservableList<Email> messages = FXCollections.observableArrayList();
 
-public Account(String clientName, MainViewController controller) throws MalformedURLException, RemoteException, NotBoundException {
+public Account(String clientName, MainViewController controller) throws RemoteException, MalformedURLException, NotBoundException  {
 	
-	this.client = new Client(clientName, this);
+		this.client = new Client(clientName, this);
 	this.clientName = clientName;
 	//this.controller = controller;
 	addObserver(controller);
@@ -53,18 +51,18 @@ public void newMessageArrived() throws RemoteException {
 	setChanged();
 	notifyObservers();
 }
-public String getMessage(Integer id) throws RemoteException {
+public String getMessage(Integer id) throws RemoteException{
 	return client.getMessage(id);
 }
-public ObservableList<Email> getEmailList() throws RemoteException {
+public ObservableList<Email> getEmailList() throws RemoteException  {
 	return client.getEmailList();
 }
-public void unregister() throws RemoteException {
+public void unregister() throws RemoteException  {
 	client.unregister();
 	
 }
 
-public ObservableList<Email> getMessages() {
+public ObservableList<Email> getMessages()  {
 	return messages;
 }
 
@@ -72,10 +70,11 @@ public boolean sendMessage(Email email, String message)  {
 	return client.sendMessage(email, message);
 }
 
-public void changeOpenedStatus(Integer id) throws RemoteException {
+/*public void changeOpenedStatus(Integer id)  {
 	// TODO Auto-generated method stub
 	client.changeOpenedStatus(id);
 }
+*/
 
 public ObservableList<Email> getSentEmailList() throws RemoteException {
 	return client.getSentEmailList();
@@ -86,7 +85,7 @@ public ObservableList<Email> getDeletedEmailList() throws RemoteException {
 	return client.getDeletedEmailList();
 }
 
-public void deleteMessage(Integer id) throws RemoteException{
+public void deleteMessage(Integer id) throws RemoteException {
 	client.deleteMessage(id);	
 }
 

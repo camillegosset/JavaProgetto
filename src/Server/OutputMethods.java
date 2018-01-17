@@ -4,31 +4,35 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import Model.Email;
 
 public class OutputMethods {
-	public static HashMap<String, String> hmap = new HashMap<String, String>();
+	public static List<String> hlist = new ArrayList<String>();
 
 	// private Lock emails;
 	public static boolean writeMessage(String message, Integer ID) {
 		PrintWriter p = null;
+		FileWriter f = null;
 		try {
-			FileWriter f = new FileWriter(ID + ".txt"); // no append mode
+			f = new FileWriter(ID + ".txt"); // no append mode
 			p = new PrintWriter(f);
 			p.println(message);
 			p.flush();
 		} catch (IOException | RuntimeException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
 			return false;
 		} finally {
+			if(f != null)
+				try {
+					f.close();
+				} catch (IOException e) {
+				}
 			if (p != null) // NB: se fallisce la new il PrintWriter e' null!!
 				p.close();
+			
 		}
 		return true;
 	}
@@ -37,8 +41,9 @@ public class OutputMethods {
 		int i = InputMethods.getID();
 		i++;
 		PrintWriter p = null;
+		FileWriter f = null;
 		try {
-			FileWriter f = new FileWriter("ID.txt");
+			f = new FileWriter("ID.txt");
 			p = new PrintWriter(f);
 			p.println(i);
 			p.flush();
@@ -50,21 +55,30 @@ public class OutputMethods {
 		} finally {
 			if (p != null) // NB: se fallisce la new il PrintWriter e' null!!
 				p.close();
+			if(f != null)
+				try {
+					f.close();
+				} catch (IOException e) {
+				}
 		}
 		return true;
 	}
 
 	@SuppressWarnings("resource")
 	public static boolean removeEmail(Integer id, String client) {
-		hmap.put(client.substring(0, 1), client.substring(0, 1)); // la prima lettera
+		if(hlist.contains(client) == false) {
+		hlist.add(client); 
+		}
 
-		synchronized (hmap.get(client.substring(0, 1))) {
+		synchronized (hlist.get(hlist.indexOf(client))) {
 
 			ArrayList<Integer> emails_received = new ArrayList<Integer>();
 			ArrayList<Integer> emails_sent = new ArrayList<Integer>();
 			ArrayList<Integer> emails_deleted = new ArrayList<Integer>();
+			
 			Scanner scf = null;
 			Scanner s = null;
+			Scanner line = null;
 			try {
 				scf = new Scanner(new File(client + ".txt"));
 				String l = "";
@@ -76,7 +90,7 @@ public class OutputMethods {
 				String sent = s.next();
 				String deleted = s.next();
 
-				Scanner line = new Scanner(received).useDelimiter("\\s*,\\s*");
+				line = new Scanner(received).useDelimiter("\\s*,\\s*");
 				while (line.hasNext()) {
 					emails_received.add(line.nextInt());
 				}
@@ -106,14 +120,19 @@ public class OutputMethods {
 				e.printStackTrace();
 				return false;
 			} finally {
-				if (scf != null) // NB: se fallisce la new File lo scanner e' null
-					scf.close();
+				
+				if(line != null)
+					line.close();
 				if (s != null)
 					s.close();
+				if (scf != null) // NB: se fallisce la new File lo scanner e' null
+					scf.close();
+				
 			}
-			PrintWriter p = null;// Penso di aver trovato l'errore.
+			PrintWriter p = null;
+			FileWriter f =  null;
 			try {
-				FileWriter f = new FileWriter(client + ".txt");
+				f = new FileWriter(client + ".txt");
 				p = new PrintWriter(f);
 				String l = ",";
 				for (int i : emails_received) {
@@ -139,6 +158,11 @@ public class OutputMethods {
 				e.printStackTrace();
 				return false;
 			} finally {
+				if(f != null)
+					try {
+						f.close();
+					} catch (IOException e) {
+					}
 				if (p != null) // NB: se fallisce la new File lo scanner e' null
 					p.close();
 			}
@@ -147,25 +171,27 @@ public class OutputMethods {
 	}
 
 	public static void addEmailClientFile(Email email, String client, int line) {
-		hmap.put(client.substring(0, 1), client.substring(0, 1)); // la prima lettera
+		if(hlist.contains(client) == false) {
+			hlist.add(client); 
+			}
 
-		synchronized (hmap.get(client.substring(0, 1))) {
+			synchronized (hlist.get(hlist.indexOf(client))) {
 			int count = InputMethods.counter(line, client + ".txt", '#');
 			// System.out.println(count);
 			// PrintWriter p= null;
 			Scanner scanner = null;
 			FileWriter writer = null;
-			String out = email.getID() + ",";
+			final String out = new String(email.getID() + ",");
 			try {
 
 				File file = new File(client + ".txt");
 				scanner = new Scanner(file);
 
-				String str = "";
+				StringBuffer str = new StringBuffer("");
 				while (scanner.hasNext()) {
-					str = str + scanner.nextLine();
+					str.append(scanner.nextLine());
 				}
-				String newStr = str.substring(0, count) + out + str.substring(count);
+				final String newStr = str.substring(0, count) + out + str.substring(count);
 				writer = new FileWriter(file);
 				writer.write(newStr);
 			} catch (Exception e) {
@@ -175,11 +201,9 @@ public class OutputMethods {
 				if (scanner != null) {
 					scanner.close();
 				}
-				
 				 if(writer != null) { try {
 					writer.close();
 				} catch (IOException e) {
-					e.printStackTrace();
 				}}
 			}
 
@@ -189,24 +213,28 @@ public class OutputMethods {
 
 	private static String emails = "emails.txt";
 
-	public static void addEmail(Email email, Server server) throws RemoteException {
+	public static void addEmail(Email email, Server server) {
 		synchronized (emails) {
-			// udpate del FileSystem emails.txt
 			PrintWriter p = null;
 			String out = email.toString();
+			FileWriter f = null;
 			try {
-				FileWriter f = new FileWriter(emails, true);
+				f = new FileWriter(emails, true);
 				p = new PrintWriter(f);
 				p.println();
 				p.println(out);
 				p.flush();
 
 			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
 			} finally {
 				if (p != null)
 					p.close();
+			}
+			if(f != null) {
+				try {
+					f.close();
+				} catch (IOException e) {
+				}
 			}
 
 		}
@@ -214,13 +242,9 @@ public class OutputMethods {
 		boolean nameMistaken = false;
 		ArrayList<String> mistakenList = new ArrayList<String>();
 
-		
 		Thread t1 = new Thread(() ->  {
 			addEmailClientFile(email, email.getSender(), 2);
 		});
-		//if (email.getReceivers().contains(email.getSender()) == false) {// se hai sbagliato non ricevi il tuo messaggio
-			
-		//}
 		t1.start();
 		try {
 			t1.join();

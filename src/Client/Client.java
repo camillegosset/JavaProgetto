@@ -15,12 +15,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Client extends UnicastRemoteObject implements ClientInterface {
-	HashMap<Integer, Email> emailList = new HashMap<Integer, Email>();
-	HashMap<Integer, String> messageList = new HashMap<Integer, String>();
 	public static HashMap<String, Client> clientList = new HashMap<String, Client>();
-	Account account;
+	private Account account;
 	private final static String chatServerURL = "rmi://localhost:5099/RMIChatServer";
-
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private static ServerInterface Server;
@@ -38,8 +35,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 		boolean result = true;
 		try {
 			Server.sendMessage(email, message);
-		} catch (RemoteException e) {	
-			if(reconnect()) {
+		} catch (RemoteException e) {
+			if (reconnect()) {
 				return sendMessage(email, message);
 			}
 			result = false;
@@ -49,21 +46,37 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
 	private boolean reconnect() {
 
-					try {
-						setServer((ServerInterface) Naming.lookup(chatServerURL));
-						Server.registerClient(name, this);
-						return true;
-					} catch (RemoteException | MalformedURLException | NotBoundException e) {
-						return false;
-					}
+		/*if(Server == null) {
+			Main.getMainController().initialize2();
+		}
+		*/
+		try {
+			setServer((ServerInterface) Naming.lookup(chatServerURL));
+			Server.registerClient(name, this);
+			return true;
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			return false;
+		}
 	}
 
 	public void retrieveMessage() throws RemoteException {
+
 		account.newMessageArrived();
 	}
 
 	public String getMessage(Integer ID) throws RemoteException {
-		String message = Server.getMessage(ID, this);
+
+		String message;
+		try {
+			message = Server.getMessage(ID, this);
+		} catch (RemoteException e) {
+			if (reconnect()) {
+					message = Server.getMessage(ID, this);
+			} else {
+				return "We coudn't getthe message - server connection problem.";
+			}
+
+		}
 		return message;
 	}
 
@@ -87,41 +100,94 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 		return clientList.get(name);
 	}
 
-	public ObservableList<Email> getEmailList() throws RemoteException {
+	public ObservableList<Email> getEmailList() throws RemoteException  {
 		ObservableList<Email> emailList = FXCollections.observableArrayList();
-		emailList.addAll(Server.getEmailList(this));
+		try {
+			emailList.addAll(Server.getEmailList(this));
+		} catch (RemoteException e) {
+			if(reconnect()) {
+					emailList.addAll(Server.getEmailList(this));
+			} else {
+				throw new RemoteException();
+			}
+		}
 		return emailList;
 	}
 
-	public void unregister() throws RemoteException {
-		Server.unregisterClient(name);
+	public void unregister() throws RemoteException  {
+		try {
+			Server.unregisterClient(name);
+		} catch (RemoteException e) {
+			if(reconnect()) {
+					Server.unregisterClient(name);
+			}
+		}
 
 	}
 
-	public void changeOpenedStatus(Integer id) throws RemoteException {
-		Server.changeOpenedStatus(id);
+	/*public void changeOpenedStatus(Integer id)  {
+		try {
+			Server.changeOpenedStatus(id);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
+	*/
 
 	public ObservableList<Email> getSentEmailList() throws RemoteException {
 		ObservableList<Email> sentEmailList = FXCollections.observableArrayList();
-		sentEmailList.addAll(Server.getSentEmailList(this));
+		try {
+			sentEmailList.addAll(Server.getSentEmailList(this));
+		} catch (RemoteException e) {
+			if(reconnect()) {
+				//System.out.println("Reconnected succefully!");
+			sentEmailList.addAll(Server.getSentEmailList(this));
+			} else {
+				throw new RemoteException();
+			}
+		}
 		return sentEmailList;
 	}
 
-	public ObservableList<Email> getDeletedEmailList() throws RemoteException {
+	public ObservableList<Email> getDeletedEmailList() throws RemoteException  {
 		ObservableList<Email> sentEmailList = FXCollections.observableArrayList();
-		sentEmailList.addAll(Server.getDeletedEmailList(this));
+		try {
+			sentEmailList.addAll(Server.getDeletedEmailList(this));
+		} catch (RemoteException e) {
+			if(reconnect()) {
+					sentEmailList.addAll(Server.getDeletedEmailList(this));
+			} else {
+				throw new RemoteException();
+			}
+		}
 		return sentEmailList;
 	}
 
 	public void deleteMessage(Integer id) throws RemoteException {
-		Server.deleteMessage(id, name);
+		try {
+			Server.deleteMessage(id, name);
+		} catch (RemoteException e) {
+			if(reconnect()) {
+					Server.deleteMessage(id, name);
+			} else {
+				throw new RemoteException();
+			}
+		}
 	}
 
 	@Override
-	public void informAboutMistakenName(String topic, ArrayList<String> mistakenReceiversList) throws RemoteException {
+	public void informAboutMistakenName(String topic, ArrayList<String> mistakenReceiversList)  {
 		account.informAboutMistakenName(topic, mistakenReceiversList);
 
+	}
+
+	public static boolean isServerOn() {
+		try {
+		Server.isServerOn();
+		return true;
+		} catch (Exception e) {
+		return false;
+		}
 	}
 
 }

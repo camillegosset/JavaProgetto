@@ -28,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MainViewController implements Observer {
 
+	String name;
 	int viewTable = 1;
 	Account account;
 	@FXML
@@ -36,22 +37,44 @@ public class MainViewController implements Observer {
 	TextArea mailPreview;
 
 	@FXML
-	private void showSelectedMessage() throws RemoteException {
+	private void showSelectedMessage() {
 		Email selectedEmail = tableView.getSelectionModel().getSelectedItem();
 		if (selectedEmail != null) {
+			/*
 			if (selectedEmail.isOpened() == false) {
 				account.changeOpenedStatus(selectedEmail.getID());// it does nothing
 			}
-			mailPreview.setText(account.getMessage(selectedEmail.getID()));
+			*/
+			try {
+				mailPreview.setText(account.getMessage(selectedEmail.getID()));
+			} catch (RemoteException e) {
+				serverconnectionerror();
+			}
 
-		
-		from.setText(selectedEmail.getSender());
-		to.setText(selectedEmail.getStringReceivers());
-		topic.setText(selectedEmail.getTopic());
-		date.setText(selectedEmail.getDate().toString());
-		hour.setText(selectedEmail.getTime().toString());
+			from.setText(selectedEmail.getSender());
+			to.setText(selectedEmail.getStringReceivers());
+			topic.setText(selectedEmail.getTopic());
+			date.setText(selectedEmail.getDate().toString());
+			hour.setText(selectedEmail.getTime().toString());
 		}
-		
+
+	}
+
+	private void serverconnectionerror() {
+
+		if (account == null) {
+			try {
+				this.account = new Account(name, this);
+			} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			}
+		}
+		Platform.runLater(() -> {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Connection error!");
+			alert.setHeaderText(null);
+			alert.setContentText("No server connection!");
+			alert.showAndWait();
+		});
 	}
 
 	// -------tableView---------
@@ -93,7 +116,7 @@ public class MainViewController implements Observer {
 
 	// -------------------------------------
 	@FXML
-	private void populateTableView(ActionEvent event) throws RemoteException {
+	private void populateTableView(ActionEvent event) {
 		topicColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("Topic"));
 		senderColumn.setCellValueFactory(new PropertyValueFactory<Email, String>("Sender"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<Email, LocalDate>("Date"));
@@ -121,7 +144,7 @@ public class MainViewController implements Observer {
 						tableView.requestFocus();
 						tableView.getSelectionModel().select(0);
 						tableView.getFocusModel().focus(0);
-						//() -> {implementation();}
+						// () -> {implementation();}
 					}
 				});
 			}
@@ -147,17 +170,31 @@ public class MainViewController implements Observer {
 	}
 
 	@FXML
-	private ObservableList<Email> getMessages() throws RemoteException {
-		ObservableList<Email> messages = account.getEmailList();
-		if (messages != null)
-			Collections.sort(messages);
+	private ObservableList<Email> getMessages() {
+		ObservableList<Email> messages = null;
+		try {
+			if (account == null) {
+				serverconnectionerror();
+				return messages;
+			}
+			messages = account.getEmailList();
+			if (messages != null)
+				Collections.sort(messages);
+		} catch (RemoteException e) {
+			serverconnectionerror();
+		}
 		return messages;
+
 	}
 
 	// -----------new--Message--------------------
 	@FXML
-	private void newMessageWindow() throws IOException {
-		Main.showNewMessageWindow();
+	private void newMessageWindow() {
+		try {
+			Main.showNewMessageWindow();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -186,19 +223,24 @@ public class MainViewController implements Observer {
 	public void onCloseAction() {
 		try {
 			{
-				account.unregister();
+				if (account != null) {
+					if (account.getClient() != null)
+						account.unregister();
+				}
 				System.exit(0);
 
 			}
 		} catch (Exception e) {//
-
-			e.printStackTrace();
 		}
 	}
 
-	public void initialize() throws MalformedURLException, RemoteException, NotBoundException {
-		String name = "Jane";
-		this.account = new Account(name, this);
+	public void initialize2() {
+
+		try {
+			this.account = new Account(name, this);
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			//serverconnectionerror();
+		}
 		nameLabel.setText(name + "@mail.com");
 		mailPreview.setText("");
 		populateTableView(null);
@@ -206,89 +248,112 @@ public class MainViewController implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		
-		if(arg1 == null) {
+
+		if (arg1 == null) {
 			ObservableList<Email> updatedMessages = getupdatedMessages();
 			tableView.setItems(updatedMessages);
-		
-		Platform.runLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("New message !");
-				alert.setHeaderText(null);
-				alert.setContentText("You have a message entitled: \n" + updatedMessages.get(0).getTopic() + "\n"
-						+ "From " + updatedMessages.get(0).getSender() + ".");
 
-				alert.showAndWait();
+			Platform.runLater(new Runnable() {
 
-			}
+				@Override
+				public void run() {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("New message !");
+					alert.setHeaderText(null);
+					alert.setContentText("You have a message entitled: \n" + updatedMessages.get(0).getTopic() + "\n"
+							+ "From " + updatedMessages.get(0).getSender() + ".");
 
-		});
-	} else {
-		viewTable = 2;
-		try {
+					alert.showAndWait();
+
+				}
+
+			});
+		} else {
+			viewTable = 2;
 			populateTableView(null);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Wrong email address!");
+					alert.setHeaderText(null);
+					alert.setContentText((String) arg1);
+					alert.showAndWait();
+
+				}
+
+			});
 		}
-		
-		Platform.runLater(new Runnable() {
 
-			
-			@Override
-			public void run() {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Wrong email address!");
-				alert.setHeaderText(null);
-				alert.setContentText((String) arg1);
-				alert.showAndWait();
-
-			}
-
-		});
 	}
-		
-		
-	}
-
 
 	private ObservableList<Email> getupdatedMessages() {
-		ObservableList<Email> messages = account.getMessages();
+		ObservableList<Email> messages = null;
+		try {
+		messages = account.getMessages();
 		Collections.sort(messages);
+		} catch (NullPointerException e) {
+			serverconnectionerror();
+			return null;
+		}
 		return messages;
 	}
 
 	@FXML
-	private ObservableList<Email> getSentMessages() throws RemoteException {
-		ObservableList<Email> messages = account.getSentEmailList();
-		Collections.sort(messages);
-		tableView.setItems(messages);
+	private ObservableList<Email> getSentMessages() {
+		ObservableList<Email> messages = null;
+		try {
+			if (account == null) {
+				serverconnectionerror();
+				return null;
+			}
+			messages = account.getSentEmailList();
+			Collections.sort(messages);
+			tableView.setItems(messages);
+		} catch (RemoteException e) {
+			serverconnectionerror();
+		}
+
 		return messages;
 	}
 
+	@SuppressWarnings("finally")
 	@FXML
-	private ObservableList<Email> getDeletedMessages() throws RemoteException {
-
-		ObservableList<Email> messages = account.getDeletedEmailList();
-		Collections.sort(messages);
-		tableView.setItems(messages);
-		return messages;
+	private ObservableList<Email> getDeletedMessages() {
+		ObservableList<Email> messages = null;
+		try {
+			if (account == null) {
+				serverconnectionerror();
+				return null;
+			}
+			messages = account.getDeletedEmailList();
+			Collections.sort(messages);
+			tableView.setItems(messages);
+		} catch (RemoteException e) {
+			serverconnectionerror();
+		} finally {
+			return messages;
+		}
 	}
 
 	@FXML
-	private void deleteMessage() throws RemoteException {
+	private void deleteMessage() {
 
 		if (tableView.getSelectionModel().getSelectedItem() != null) {
 			Email selectedEmail = tableView.getSelectionModel().getSelectedItem();
 			if (viewTable != 3) {
-				//selectedEmail.setDeleted(LocalDate.now());
-				account.deleteMessage(selectedEmail.getID());
+				// selectedEmail.setDeleted(LocalDate.now());
+				try {
+					account.deleteMessage(selectedEmail.getID());
+				} catch (NullPointerException | RemoteException e) {
+					serverconnectionerror();
+				}
 				populateTableView(null);// une methode pour supprimer un mail
 			} else {
 				Platform.runLater(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						Alert alert = new Alert(AlertType.INFORMATION);
@@ -303,5 +368,9 @@ public class MainViewController implements Observer {
 				});
 			}
 		}
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
