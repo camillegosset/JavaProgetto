@@ -148,6 +148,18 @@ public class Email implements Serializable, Comparable <Email> {
 			}
 		return res.toString();
 	}
+	public static String getStringReceivers(ArrayList<String> receivers) {
+		StringBuffer res= new StringBuffer("");
+		int i;
+		for( i=0; i< receivers.size() - 1; i++) {
+			res.append(receivers.get(i)+ "@mail.com" + " , ");
+		}
+		
+			if(receivers.size() > 0) {
+				res.append(receivers.get(i)+ "@mail.com");
+			}
+		return res.toString();
+	}
 
 
 

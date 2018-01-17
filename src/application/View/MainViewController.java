@@ -23,7 +23,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -45,15 +44,14 @@ public class MainViewController implements Observer {
 			}
 			mailPreview.setText(account.getMessage(selectedEmail.getID()));
 
-		}
+		
 		from.setText(selectedEmail.getSender());
 		to.setText(selectedEmail.getStringReceivers());
 		topic.setText(selectedEmail.getTopic());
 		date.setText(selectedEmail.getDate().toString());
 		hour.setText(selectedEmail.getTime().toString());
-
-		// -------naive--version
-		// mailPreview.setText(selectedEmail.getContent());
+		}
+		
 	}
 
 	// -------tableView---------
@@ -123,6 +121,7 @@ public class MainViewController implements Observer {
 						tableView.requestFocus();
 						tableView.getSelectionModel().select(0);
 						tableView.getFocusModel().focus(0);
+						//() -> {implementation();}
 					}
 				});
 			}
@@ -166,18 +165,14 @@ public class MainViewController implements Observer {
 	private void replyWindow(ActionEvent event) throws IOException {
 		Email email = tableView.getSelectionModel().getSelectedItem();
 		if (email == null) {
-			System.out.println("Zero");
 			return;
 		}
-		System.out.println("One");
 		if (event.getSource().equals(reply)) {
-			System.out.println("Two");
 			Main.showReplyWindow(1, email);
 
 		}
 
 		if (event.getSource().equals(replyToAll)) {
-			System.out.println("Two");
 			Main.showReplyWindow(2, email);
 		}
 
@@ -204,17 +199,20 @@ public class MainViewController implements Observer {
 	public void initialize() throws MalformedURLException, RemoteException, NotBoundException {
 		String name = "Jane";
 		this.account = new Account(name, this);
-		nameLabel.setText(name);
+		nameLabel.setText(name + "@mail.com");
 		mailPreview.setText("");
 		populateTableView(null);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		ObservableList<Email> updatedMessages = getupdatedMessages();
-		tableView.setItems(updatedMessages);
+		
+		if(arg1 == null) {
+			ObservableList<Email> updatedMessages = getupdatedMessages();
+			tableView.setItems(updatedMessages);
+		
 		Platform.runLater(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -228,18 +226,33 @@ public class MainViewController implements Observer {
 			}
 
 		});
+	} else {
+		viewTable = 2;
+		try {
+			populateTableView(null);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+		Platform.runLater(new Runnable() {
 
+			
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Wrong email address!");
+				alert.setHeaderText(null);
+				alert.setContentText((String) arg1);
+				alert.showAndWait();
+
+			}
+
+		});
+	}
+		
+		
 	}
 
-	@FXML
-	private void showAlert() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information Dialog");
-		alert.setHeaderText(null);
-		alert.setContentText("I have a great message for you!");
-
-		alert.showAndWait();
-	}
 
 	private ObservableList<Email> getupdatedMessages() {
 		ObservableList<Email> messages = account.getMessages();
@@ -269,10 +282,25 @@ public class MainViewController implements Observer {
 
 		if (tableView.getSelectionModel().getSelectedItem() != null) {
 			Email selectedEmail = tableView.getSelectionModel().getSelectedItem();
-			if (selectedEmail.getDeleted() == null) {
-				selectedEmail.setDeleted(LocalDate.now());
+			if (viewTable != 3) {
+				//selectedEmail.setDeleted(LocalDate.now());
 				account.deleteMessage(selectedEmail.getID());
 				populateTableView(null);// une methode pour supprimer un mail
+			} else {
+				Platform.runLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Deleting a deleted message!");
+						alert.setHeaderText(null);
+						alert.setContentText("You cannot delete a deleted message!");
+
+						alert.showAndWait();
+
+					}
+
+				});
 			}
 		}
 	}

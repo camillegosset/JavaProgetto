@@ -13,6 +13,10 @@ import javafx.collections.ObservableList;
 
 public class InputMethods {
 
+	private static Scanner scanner;
+	private static Scanner scanner2;
+	private static Scanner scanner3;
+
 	@SuppressWarnings("resource")
 	public static ArrayList<String> inputLogin() { // reading logins all
 		Scanner scf = null;
@@ -43,7 +47,8 @@ public class InputMethods {
 		Scanner scf = null;
 		boolean esiste = false;
 		try {
-			scf = new Scanner(new File("logins.txt")).useDelimiter("\\s*,\\s*");
+			scanner3 = new Scanner(new File("logins.txt"));
+			scf = scanner3.useDelimiter("\\s*,\\s*");
 			String l = "";
 			while (scf.hasNext()) {
 				clientList.add(l = scf.next());
@@ -62,25 +67,6 @@ public class InputMethods {
 		return esiste;
 	}
 
-	// not sure if we need a logs file for every client
-	public static void visualizzareLogs(String login) {
-		Scanner scf = null;
-		try {
-			scf = new Scanner(new File(login + "/logs.txt"));
-			String l = "";
-			while (scf.hasNext()) {
-				l = scf.nextLine();
-				System.out.println(l);
-			}
-		} catch (IOException e) {
-			System.out.println("PROBLEMA: " + e.getMessage());
-			return;
-		} finally {
-			if (scf != null) // NB: se fallisce la new File lo scanner e' null
-				scf.close();
-		}
-	}
-
 	@SuppressWarnings("finally")
 	public static String getMessage(Integer ID) {
 		StringBuffer message = new StringBuffer("");
@@ -88,7 +74,7 @@ public class InputMethods {
 		try {
 			scf = new Scanner(new File(ID + ".txt"));
 			while (scf.hasNext()) {
-				message.append(scf.nextLine());
+				message.append(scf.nextLine() + "\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -158,7 +144,7 @@ public class InputMethods {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
+			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
 			// return email;
 		} finally {
 			if (scf != null)
@@ -219,14 +205,14 @@ public class InputMethods {
 		Scanner scf = null;
 		Scanner s = null;
 		try {
-			scf = new Scanner(new File(name + ".txt")).useDelimiter("\\s*#\\s*");
+			scanner = new Scanner(new File(name + ".txt"));
+			scf = scanner.useDelimiter("\\s*#\\s*");
 			ArrayList<String> tmp = new ArrayList<String>();
-			int j = 0;
 			while (scf.hasNext()) {
 				tmp.add(scf.next());
 			}
-			// System.out.println(tmp.get(0));
-			s = new Scanner(tmp.get(line)).useDelimiter("\\s*,\\s*");
+			scanner2 = new Scanner(tmp.get(line));
+			s = scanner2.useDelimiter("\\s*,\\s*");
 			ArrayList<Integer> list = new ArrayList<Integer>();
 			while (s.hasNext()) {
 
@@ -235,9 +221,7 @@ public class InputMethods {
 			}
 
 			for (Integer i : list) {
-				// System.out.println(i);
 				emailList.add(getEmail(i));
-				// System.out.println(getEmail(i)); nullPointerException
 			}
 		} catch (Exception e) {
 			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
@@ -245,9 +229,12 @@ public class InputMethods {
 		} finally {
 			if (scf != null)
 				scf.close();
-		}
-		if (emailList.isEmpty()) {
-			System.out.println("La lista e' vuota");
+			if (scanner != null)
+				scanner.close();
+			if (scanner2 != null)
+				scanner2.close();
+			if (s != null)
+				s.close();
 		}
 
 		return emailList;
