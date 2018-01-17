@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane prefHeight="300.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141">
+<BorderPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.View.AccountSelectionController">
    <center>
-      <ComboBox prefHeight="65.0" prefWidth="255.0" BorderPane.alignment="CENTER" />
+      <ComboBox fx:id="userChoice" prefHeight="65.0" prefWidth="255.0" promptText="Choice login" visibleRowCount="3" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="95.0" prefWidth="165.0" text="OK" BorderPane.alignment="CENTER" />
+      <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="80.0" prefWidth="150.0" text="OK" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="30.0" />
+         </BorderPane.margin></Button>
    </bottom>
 </BorderPane>
