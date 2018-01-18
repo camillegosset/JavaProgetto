@@ -1,1 +1,20 @@
-vvdfgd
+
+ 
+ 
+ 
+ On 2018-01-18 at 21:32:57, Jane wrote: 
+
+ 
+ 
+ 
+ On 2018-01-18 at 21:31:07, Matteo wrote: 
+
+ 
+ 
+ 
+ On 2018-01-18 at 21:19:50, Jane wrote: 
+Caro Matteo! 
+yes, the onAction method seems to be the way to go: docs.oracle.com/javafx/2/api/javafx/scene/control/… -> +1 
+But you need to annotate the onEnter() method with @FXML when "binding" from FXML 
+and it has to take an ActionEvent argument, AFAIK. – Puce Dec 14 '12 at 16:25 
+

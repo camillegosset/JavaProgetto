@@ -162,43 +162,6 @@ public class InputMethods {
 		return emails;
 	}
 
-	public static int counter(int line, String file, char separatore) {
-		int count = Integer.MIN_VALUE; // diese, croisillon
-		// 1 Open file
-		Scanner scf = null;
-		try {
-			scf = new Scanner(new File(file));
-			String tmp = "";
-			while (scf.hasNext()) {
-				tmp = tmp + scf.next();
-			}
-			// 2 place the cursor
-			// 3 while char != # : count ++
-			int i = 0;
-			while (i < tmp.length() && line > 0) {
-				if (tmp.charAt(i) == separatore) {
-					line--;
-				}
-				i++;
-			}
-			if (line <= 0) {
-				count = i - 1;
-			}
-		} catch (Exception e)
-
-		{
-			System.out.println("Eccezione: " + e.getClass() + " - " + e.getMessage());
-			// e.printStackTrace();
-		} finally {
-			if (scf != null)
-				scf.close();
-		}
-
-		// 4 return count-1
-		return count;
-
-	}
-
 	public static ArrayList<Email> getEmailList(String name, int line) {
 		ArrayList<Email> emailList = new ArrayList<Email>();
 
@@ -214,10 +177,13 @@ public class InputMethods {
 			scanner2 = new Scanner(tmp.get(line));
 			s = scanner2.useDelimiter("\\s*,\\s*");
 			ArrayList<Integer> list = new ArrayList<Integer>();
-			while (s.hasNext()) {
+			while (s.hasNext()) {// int?
 
-				list.add(s.nextInt());
-
+				try {
+					list.add(s.nextInt());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 			for (Integer i : list) {

@@ -25,6 +25,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class MainViewController implements Observer {
 
@@ -59,7 +61,15 @@ public class MainViewController implements Observer {
 		}
 
 	}
-
+	@FXML
+	private void showSelectedMessage2(KeyEvent ke) {
+		if (ke.getCode().equals(KeyCode.ENTER))
+        {
+			showSelectedMessage();
+        }
+	
+	}
+	
 	private void serverconnectionerror() {
 
 		if (account == null) {
@@ -260,9 +270,10 @@ public class MainViewController implements Observer {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("New message !");
 					alert.setHeaderText(null);
+					if(updatedMessages != null && updatedMessages.size()>0) {
 					alert.setContentText("You have a message entitled: \n" + updatedMessages.get(0).getTopic() + "\n"
 							+ "From " + updatedMessages.get(0).getSender() + ".");
-
+					}
 					alert.showAndWait();
 
 				}
@@ -310,9 +321,12 @@ public class MainViewController implements Observer {
 				return null;
 			}
 			messages = account.getSentEmailList();
+			if(messages != null) {
 			Collections.sort(messages);
+			}
 			tableView.setItems(messages);
-		} catch (RemoteException e) {
+			
+		} catch (RemoteException | IllegalStateException e) {
 			serverconnectionerror();
 		}
 

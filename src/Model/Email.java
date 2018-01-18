@@ -107,8 +107,10 @@ public class Email implements Serializable, Comparable <Email> {
 	}
 
 	public int compareTo(Email e) {
-		
-		if (getDate().compareTo(e.getDate())== 0) {
+		if(e == null) {
+			return 0;
+		}
+		if (getDate().compareTo(e.getDate()) == 0) {
 			return -this.getTime().compareTo(e.getTime());
 		} else {
 		return -this.getDate().compareTo(e.getDate());

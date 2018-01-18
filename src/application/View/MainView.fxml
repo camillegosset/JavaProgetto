@@ -105,7 +105,7 @@
       </AnchorPane>
    </bottom>
    <center>
-      <TableView fx:id="tableView" onMouseClicked="#showSelectedMessage" prefHeight="163.0" prefWidth="664.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" onKeyPressed="#showSelectedMessage2" onMouseClicked="#showSelectedMessage" prefHeight="163.0" prefWidth="664.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="topicColumn" prefWidth="265.0" text="Topic" />
           <TableColumn fx:id="senderColumn" minWidth="0.0" prefWidth="187.0" text="Sender" />
